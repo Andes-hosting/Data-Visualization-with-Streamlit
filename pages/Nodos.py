@@ -128,4 +128,5 @@ locations['Longitude'] = locations['location'].apply(lambda loc: loc.longitude i
 locations = locations.rename(columns={'Latitude': 'lat', 'Longitude': 'lon'})
 
 # Display the map 
-st.map(locations)
+st.map()
+# st.map(locations)

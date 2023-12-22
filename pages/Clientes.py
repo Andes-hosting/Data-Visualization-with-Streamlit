@@ -14,44 +14,46 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from geopy.geocoders import Nominatim
 
-# Set page to wide mode
-st.set_page_config(layout="wide")
+'''THIS IS SENSITIVE INFORMATION, PLEASE DON'T LOOK'''
 
-import credentials
-connection = credentials.connection
-SCHEMA_MINECRAFT = credentials.SCHEMA_MINECRAFT
-SCHEMA_PTERODACTYL = credentials.SCHEMA_PTERODACTYL
-SCHEMA_KUMA = credentials.SCHEMA_KUMA
+# # Set page to wide mode
+# st.set_page_config(layout="wide")
 
-
-# Get clients info
-engine = create_engine(connection)
-with engine.connect() as conn:
-    clients_info = conn.execute(text(f'SELECT * FROM {SCHEMA_PTERODACTYL}.clients_info'))
-    clients_info = pd.DataFrame(clients_info)
-
-# Get clients historical info
-engine = create_engine(connection)
-with engine.connect() as conn:
-    clients_hist = conn.execute(text(f'SELECT * FROM {SCHEMA_PTERODACTYL}.clients_historical_info'))
-    clients_hist = pd.DataFrame(clients_hist)
-
-# Get clients last connection info
-engine = create_engine(connection)
-with engine.connect() as conn:
-    clients_last_conn = conn.execute(text(f'SELECT * FROM {SCHEMA_PTERODACTYL}.clients_last_connection'))
-    clients_last_conn = pd.DataFrame(clients_last_conn)
+# import credentials
+# connection = credentials.connection
+# SCHEMA_MINECRAFT = credentials.SCHEMA_MINECRAFT
+# SCHEMA_PTERODACTYL = credentials.SCHEMA_PTERODACTYL
+# SCHEMA_KUMA = credentials.SCHEMA_KUMA
 
 
-'''STILL NEEDS TO ADJUST THE LAST TWO TABLES'''
-# Create and display clients information table
-st.subheader('Clients Information')
-st.dataframe(clients_info, hide_index=True)
+# # Get clients info
+# engine = create_engine(connection)
+# with engine.connect() as conn:
+#     clients_info = conn.execute(text(f'SELECT * FROM {SCHEMA_PTERODACTYL}.clients_info'))
+#     clients_info = pd.DataFrame(clients_info)
 
-# Create and display historical server information table
-st.subheader('Historical Server Information')
-st.dataframe(clients_hist, hide_index=True)
+# # Get clients historical info
+# engine = create_engine(connection)
+# with engine.connect() as conn:
+#     clients_hist = conn.execute(text(f'SELECT * FROM {SCHEMA_PTERODACTYL}.clients_historical_info'))
+#     clients_hist = pd.DataFrame(clients_hist)
 
-# Create and display clients last connection table
-st.subheader("Client's Last Connection")
-st.dataframe(clients_last_conn, hide_index=True)
+# # Get clients last connection info
+# engine = create_engine(connection)
+# with engine.connect() as conn:
+#     clients_last_conn = conn.execute(text(f'SELECT * FROM {SCHEMA_PTERODACTYL}.clients_last_connection'))
+#     clients_last_conn = pd.DataFrame(clients_last_conn)
+
+
+# '''STILL NEEDS TO ADJUST THE LAST TWO TABLES'''
+# # Create and display clients information table
+# st.subheader('Clients Information')
+# st.dataframe(clients_info, hide_index=True)
+
+# # Create and display historical server information table
+# st.subheader('Historical Server Information')
+# st.dataframe(clients_hist, hide_index=True)
+
+# # Create and display clients last connection table
+# st.subheader("Client's Last Connection")
+# st.dataframe(clients_last_conn, hide_index=True)
