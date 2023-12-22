@@ -17,31 +17,12 @@ from geopy.geocoders import Nominatim
 #Set page to wide mode
 st.set_page_config(layout="wide")
 
-# Load .env file credentials
-load_dotenv()
+import credentials
+connection = credentials.connection
+SCHEMA_MINECRAFT = credentials.SCHEMA_MINECRAFT
+SCHEMA_PTERODACTYL = credentials.SCHEMA_PTERODACTYL
+SCHEMA_KUMA = credentials.SCHEMA_KUMA
 
-# Database connection
-host = os.getenv('POSTGRES_HOST')
-port = os.getenv('POSTGRES_PORT')
-database = os.getenv('POSTGRES_DATABASE')
-username = os.getenv('POSTGRES_USERNAME')
-password = os.getenv('POSTGRES_PASSWORD')
-connection = f'postgresql://{username}:{password}@{host}:{port}/{database}'
-
-# Pterodactyl connection
-pterodactyl_url = os.getenv('PTERODACTYL_URL')
-application_api_key = os.getenv('PTERODACTYL_APP_KEY')
-client_api_key = os.getenv('PTERODACTYL_CLI_KEY')
-
-# Connecto to Pterodactyl Application API
-api_app = PterodactylClient(pterodactyl_url, application_api_key, debug=False)
-# Connecto to Pterodactyl Client API
-api_cli = PterodactylClient(pterodactyl_url, client_api_key, debug=False)
-
-# Schemas from PostgreSQL
-SCHEMA_PTERODACTYL = 'pterodactyl'
-SCHEMA_MINECRAFT = 'minecraft'
-SCHEMA_KUMA = 'kuma'
 
 # Get activity_analisis info
 engine = create_engine(connection)
