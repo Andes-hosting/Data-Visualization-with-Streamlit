@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import hmac
 from sqlalchemy import create_engine, text
 from pydactyl import PterodactylClient
 from dotenv import load_dotenv
@@ -14,8 +15,40 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from geopy.geocoders import Nominatim
 
+
+def check_password():
+    """Returns `True` if the user had the correct password."""
+
+    def password_entered():
+        """Checks whether a password entered by the user is correct."""
+        if hmac.compare_digest(st.session_state["password"], st.secrets["password"]):
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # Don't store the password.
+        else:
+            st.session_state["password_correct"] = False
+
+    # Return True if the password is validated.
+    if st.session_state.get("password_correct", False):
+        return True
+
+    # Show input for password.
+    st.text_input(
+        "Password", type="password", on_change=password_entered, key="password"
+    )
+    if "password_correct" in st.session_state:
+        st.error("😕 Password incorrect")
+    return False
+
+
+if not check_password():
+    st.stop()  # Do not continue if check_password is not True.
+
+
 # Set page to wide mode
 st.set_page_config(layout="wide")
+
+# Add a big title for the full dashboard
+st.title("Shlink Visit Data")
 
 import credentials
 connection = credentials.connection
@@ -40,7 +73,7 @@ with engine.connect() as conn:
 
 
 # Create a sidebar for global filters
-st.sidebar.header('Global Filters')
+st.sidebar.header('Filters')
 
 # Add a date range selector
 date_range_selection = st.sidebar.radio('Select Date Range', ('Last 24 hours', 'Last 7 days', 'Last 30 days', 'All Time'))
