@@ -18,6 +18,7 @@ if env_file:
     SCHEMA_PTERODACTYL = 'pterodactyl'
     SCHEMA_MINECRAFT = 'minecraft'
     SCHEMA_KUMA = 'kuma'
+    SCHEMA_SHLINK = 'shlink'
 
 else:
     # Database connection
@@ -32,3 +33,4 @@ else:
     SCHEMA_PTERODACTYL = 'pterodactyl'
     SCHEMA_MINECRAFT = 'minecraft'
     SCHEMA_KUMA = 'kuma'
+    SCHEMA_SHLINK = 'shlink'

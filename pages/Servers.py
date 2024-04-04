@@ -79,46 +79,46 @@ col2.plotly_chart(activity_per_server)
 
 
 
-# SECOND ROW OF PLOTS
-# Extract the hour and create a new column
-activity['hour'] = activity['time'].apply(lambda x: x.hour)
+# # SECOND ROW OF PLOTS
+# # Extract the hour and create a new column
+# activity['hour'] = activity['time'].apply(lambda x: x.hour)
 
-# Group by hour and calculate the count
-activity_counts_per_hour = activity.groupby('hour').size().reset_index(name='count')
+# # Group by hour and calculate the count
+# activity_counts_per_hour = activity.groupby('hour').size().reset_index(name='count')
 
-fig_bar_time = px.bar(activity_counts_per_hour, x='hour', y='count', height=400, width=500)
+# fig_bar_time = px.bar(activity_counts_per_hour, x='hour', y='count', height=400, width=500)
 
-# Set x-axis tick values for every hour from 00 to 23
-fig_bar_time.update_xaxes(tickmode='array', tickvals=list(range(24)))
+# # Set x-axis tick values for every hour from 00 to 23
+# fig_bar_time.update_xaxes(tickmode='array', tickvals=list(range(24)))
 
-# Convert 'data' to datetime
-activity['date'] = pd.to_datetime(activity['date'])
+# # Convert 'data' to datetime
+# activity['date'] = pd.to_datetime(activity['date'])
 
-# Extract the day of the week and create a new column
-activity['day_of_week'] = activity['date'].dt.day_name()
+# # Extract the day of the week and create a new column
+# activity['day_of_week'] = activity['date'].dt.day_name()
 
-# Define the order of days of the week
-days_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+# # Define the order of days of the week
+# days_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
-# Convert 'day_of_week' to a category with the specified order
-activity['day_of_week'] = pd.Categorical(activity['day_of_week'], categories=days_order, ordered=True)
+# # Convert 'day_of_week' to a category with the specified order
+# activity['day_of_week'] = pd.Categorical(activity['day_of_week'], categories=days_order, ordered=True)
 
-# Group by day of the week and calculate the count
-activity_counts_per_day = activity.groupby('day_of_week').size().reset_index(name='count')
+# # Group by day of the week and calculate the count
+# activity_counts_per_day = activity.groupby('day_of_week').size().reset_index(name='count')
 
-fig_bar_day = px.bar(activity_counts_per_day, x='day_of_week', y='count', height=400, width=500)
+# fig_bar_day = px.bar(activity_counts_per_day, x='day_of_week', y='count', height=400, width=500)
 
 
-# Create two columns
-col1, col2 = st.columns(2)
+# # Create two columns
+# col1, col2 = st.columns(2)
 
-# Create and display total activity per hour of the day
-col1.subheader('Activity Per Hour of the Day')
-col1.plotly_chart(fig_bar_time)
+# # Create and display total activity per hour of the day
+# col1.subheader('Activity Per Hour of the Day')
+# col1.plotly_chart(fig_bar_time)
 
-# Create and display total activity per day of the week
-col2.subheader('Activity Per Day of the Week')
-col2.plotly_chart(fig_bar_day)
+# # Create and display total activity per day of the week
+# col2.subheader('Activity Per Day of the Week')
+# col2.plotly_chart(fig_bar_day)
 
 
 
@@ -128,10 +128,16 @@ col2.plotly_chart(fig_bar_day)
 st.subheader("Servers Utilization Metrics")
 
 # Create a dropdown for selecting the server
-selected_server = st.selectbox("Select Server", utilization['server_identifier'].unique())
+options = utilization['server_identifier'].unique().tolist()
+options.insert(0, 'todos')
+print(options)
+selected_server = st.selectbox("Select Server", options)
 
-# Filter the data based on the selected server
-filtered_data = utilization[utilization['server_identifier'] == selected_server]
+ # Filter the data based on the selected server
+if selected_server == 'todos':
+    filtered_data = utilization
+else:
+    filtered_data = utilization[utilization['server_identifier'] == selected_server]
 
 # Define the number of decimals you want
 decimals = 2  # Change this to 1 if you want one decimal place
@@ -147,6 +153,8 @@ col2.metric("CPU", round(filtered_data['cpu_mean'].mean(), decimals), round(filt
 
 # Create and display the disk metrics
 col3.metric("Disk", round(filtered_data['disk_mean'].mean(), decimals), round(filtered_data['disk_std'].mean(), decimals))
+
+print(utilization['server_identifier'].unique())
 
 
 
@@ -168,10 +176,13 @@ days_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 activity['day_of_week'] = pd.Categorical(activity['day_of_week'], categories=days_order, ordered=True)
 
 # Create a selectbox to filter servers
-selected_server = st.selectbox('Select a Server', activity['server_identifier'].unique())
+#selected_server = st.selectbox('Select a Server', activity['server_identifier'].unique())
 
 # Filter the DataFrame based on the selected server
-filtered_data = activity[activity['server_identifier'] == selected_server]
+if selected_server == 'todos':
+    filtered_data = activity
+else:
+    filtered_data = activity[activity['server_identifier'] == selected_server]
 
 # Group by hour and calculate the count
 activity_counts_per_hour = filtered_data.groupby('hour').size().reset_index(name='count')
