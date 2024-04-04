@@ -22,7 +22,7 @@ if env_file:
 
 else:
     # Database connection
-    host = st.secrets["POSTGRES_HOST"]
+    host = st.secrets['POSTGRES_HOST']
     port = st.secrets['POSTGRES_PORT']
     database = st.secrets['POSTGRES_DATABASE']
     username = st.secrets['POSTGRES_USERNAME']
@@ -33,4 +33,3 @@ else:
     SCHEMA_PTERODACTYL = 'pterodactyl'
     SCHEMA_MINECRAFT = 'minecraft'
     SCHEMA_KUMA = 'kuma'
-    SCHEMA_SHLINK = 'shlink'
